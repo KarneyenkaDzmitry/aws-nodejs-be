@@ -48,31 +48,6 @@
                         }
                     }
                 }
-            },
-            "options": {
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "headers": {
-                            "Access-Control-Allow-Origin": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            },
-                            "Access-Control-Allow-Methods": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {}
-                    }
-                }
             }
         },
         "/products": {
@@ -89,31 +64,6 @@
                                 }
                             }
                         }
-                    }
-                }
-            },
-            "options": {
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "headers": {
-                            "Access-Control-Allow-Origin": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            },
-                            "Access-Control-Allow-Methods": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {}
                     }
                 }
             }
@@ -170,7 +120,6 @@
             "Error": {
                 "type": "object",
                 "required": [
-                    "code",
                     "message"
                 ],
                 "properties": {

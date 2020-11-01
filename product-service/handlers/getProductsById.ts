@@ -8,9 +8,8 @@ const headers = {
 
 export const getProductsById: APIGatewayProxyHandler = async (event, _context) => {
     try {
-        
+
         const req_id = event.pathParameters.productId;
-        console.log(req_id);
         const product = productList.find(({ id: db_id }) => db_id === req_id);
         if (product) {
             return {
@@ -21,8 +20,8 @@ export const getProductsById: APIGatewayProxyHandler = async (event, _context) =
         } else {
             return {
                 headers,
-                statusCode: 404,
-                body: JSON.stringify({ message: `NOT_FOUND: Product hasn't been found in DB by id [${req_id}]` }, null, 2)
+                statusCode: 200,
+                body: JSON.stringify({ message: `Product not found: [${req_id}]` }, null, 2)
             }
         }
     } catch (error) {
