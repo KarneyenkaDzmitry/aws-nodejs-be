@@ -20,7 +20,7 @@ export const getProductsById: APIGatewayProxyHandler = async (event, _context) =
         } else {
             return {
                 headers,
-                statusCode: 200,
+                statusCode: 404,
                 body: JSON.stringify({ message: `Product not found: [${req_id}]` }, null, 2)
             }
         }
