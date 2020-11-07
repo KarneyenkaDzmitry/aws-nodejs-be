@@ -4,7 +4,10 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "jest"
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "getProductsList-test": "serverless invoke local --function getProductsList",
+    "getProductsById-test": "serverless invoke local --function getProductsById"
   },
   "dependencies": {
     "source-map-support": "^0.5.10"
