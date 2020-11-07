@@ -1,0 +1,137 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "AWS Nodejs BE API",
+        "version": "0.1.0",
+        "license": {
+            "name": "MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://ee4r4m00wc.execute-api.eu-west-1.amazonaws.com/{basePath}",
+            "variables": {
+                "basePath": {
+                    "default": "/dev"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/products/{productId}": {
+            "get": {
+                "summary": "Details about a product",
+                "operationId": "getProductsById",
+                "tags": [
+                    "product"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/product"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "description": "Retreiving full list of products",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/products"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "products": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/product"
+                }
+            },
+            "product": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "count",
+                    "price"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "format": "int32"
+                    },
+                    "price": {
+                        "type": "number",
+                        "minimum": 0,
+                        "format": "float"
+                    }
+                },
+                "example": {
+                    "count": 4,
+                    "description": "Short Product Description1",
+                    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
+                    "price": 2.4,
+                    "title": "ProductOne"
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
