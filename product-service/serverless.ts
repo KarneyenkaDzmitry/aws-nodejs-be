@@ -27,11 +27,17 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      DB_NAME: '${file(./env.json):DB_NAME}',
+      DB_USR: '${file(./env.json):DB_USR}',
+      DB_PSSW: '${file(./env.json):DB_PSSW}',
+      DB_ENDPOINT: '${file(./env.json):DB_ENDPOINT}',
+      DB_PORT: '${file(./env.json):DB_PORT}'
     },
   },
   functions: {
     getProductsList: {
       handler: 'handler.getProductsList',
+
       events: [
         {
           http: {
@@ -44,6 +50,7 @@ const serverlessConfiguration: Serverless = {
     },
     getProductsById: {
       handler: "handler.getProductsById",
+
       events: [
         {
           http: {

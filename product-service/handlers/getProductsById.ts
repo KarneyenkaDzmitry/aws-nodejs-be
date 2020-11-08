@@ -7,28 +7,30 @@ const headers = {
 };
 
 export const getProductsById: APIGatewayProxyHandler = async (event, _context) => {
+    let response = {};
     try {
 
         const req_id = event.pathParameters.productId;
         const product = productList.find(({ id: db_id }) => db_id === req_id);
-        if (product) {
-            return {
+        response = (product ?
+            {
                 headers,
                 statusCode: 200,
                 body: JSON.stringify(product)
             }
-        } else {
-            return {
+            :
+            {
                 headers,
                 statusCode: 404,
-                body: JSON.stringify({ message: `Product not found: [${req_id}]` }, null, 2)
-            }
-        }
+                body: JSON.stringify({ message: `Prouct not found: [${req_id}]` }, null, 2)
+            });
     } catch (error) {
-        return {
+        response = {
             headers,
             statusCode: 500,
             body: JSON.stringify({ message: `SERVER_ERROR: [${error}]` }, null, 2)
         };
+    } finally {
+        return response;
     }
 }
