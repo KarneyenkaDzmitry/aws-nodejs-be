@@ -1,22 +1,26 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
-import productList from '../mocks/productList.mock.data.json';
+import * as invoke from '../sql/db_client.helper';
+import { getPattern } from '../enums/patterns.enum';
 const headers = {
     // "Access-Control-Allow-Origin": "https://d3kaeffpjwwpyk.cloudfront.net"
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
+    // 'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
 };
 
 export const getProductsById: APIGatewayProxyHandler = async (event, _context) => {
+    let product;
     let response = {};
     try {
-
         const req_id = event.pathParameters.productId;
-        const product = productList.find(({ id: db_id }) => db_id === req_id);
-        response = (product ?
+        if (!getPattern("UUID_V4").test(req_id)) throw new Error("ProductId should match to the UUID pattern.")
+        product = await invoke.invoke(`select p.id, p.description, p.price, p.title, s.count from products p left join stocks s on p.id = s.product_id where s.product_id = '${req_id}' and p.id = '${req_id}'`);
+        // console.debug(product.rows[0]);
+        response = (product.rows[0] ?
             {
                 headers,
                 statusCode: 200,
-                body: JSON.stringify(product)
+                body: JSON.stringify(product.rows[0])
             }
             :
             {

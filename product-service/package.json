@@ -7,11 +7,13 @@
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
     "getProductsList-test": "serverless invoke local --function getProductsList",
-    "getProductsById-test": "serverless invoke local --function getProductsById"
+    "getProductsById-test": "serverless invoke local --function getProductsById",
+    "getProductsById-test-data": "serverless invoke local -f getProductsById --data='{\"pathParameters\": { \"productId\":\"7567ec4b-b10c-48c5-9345-fc73c48a80a2\"}}'"
   },
   "dependencies": {
     "pg": "^8.4.2",
-    "source-map-support": "^0.5.10"
+    "source-map-support": "^0.5.10",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -21,6 +23,7 @@
     "@types/jest": "^26.0.15",
     "@types/node": "^10.12.18",
     "@types/serverless": "^1.72.5",
+    "@types/yup": "^0.29.9",
     "babel-jest": "^26.6.1",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "jest": "^26.6.1",

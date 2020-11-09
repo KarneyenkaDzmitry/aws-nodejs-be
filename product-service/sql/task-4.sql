@@ -1,7 +1,7 @@
 --1 command: connect uuid extention
 CREATE EXTENSION IF NOT EXISTS 'uuid-ossp';
 
---2 command: create product table (model):
+--2 command: create product table:
 --    products:
 --    id -  uuid (primary key)
 --    title - text, not null
@@ -14,15 +14,19 @@ create table products (
 	price integer	
 );
 
---3 command: create stoks table (model):
+drop table products
+
+--3 command: create stocks table:
 --stocks:
 --    product_id - uuid (foreign key from products.id)
 --    count - integer (There are no more products than this count in stock)
-create table stoks (
+create table stocks (
 	product_id uuid primary KEY,
 	count integer,
-	foreign key ('product_id') references 'products' ('id')
-);
+	foreign key (product_id) references products(id)
+)
+
+drop table stocks 
 
 --4 command fill 'products' table with test data
 insert into products (id, title, description, price) values
@@ -91,7 +95,8 @@ insert into products (id, title, description, price) values
 --    }
 ('7567ec4b-b10c-48c5-9345-fc73c48a80a6','ProductName', 'Short Product Description7', 1900 )
 
-insert into stoks (product_id, count) values
+-- Fill stoks table with test data
+insert into stocks (product_id, count) values
 --('4338c386-5d4c-4718-82ab-bf1054ae6f43', 33 )
 ('7567ec4b-b10c-48c5-9345-fc73c48a80aa', 4 ),
 ('7567ec4b-b10c-48c5-9345-fc73c48a80a0', 6 ),
@@ -102,3 +107,9 @@ insert into stoks (product_id, count) values
 ('7567ec4b-b10c-48c5-9345-fc73c48a80a5', 2 ),
 ('7567ec4b-b10c-48c5-9345-fc73c48a80a6', 3 )
 
+
+-- Query - retrieving all products 
+select p.id, p.description, p.price, p.title, s.count from products p left join stoks s on p.id=s.product_id
+
+-- Query - retrieving product by id 
+select p.id, p.description, p.price, p.title, s.count from products p left join stoks s on p.id = s.product_id where s.product_id = '7567ec4b-b10c-48c5-9345-fc73c48a80aa' and p.id = '7567ec4b-b10c-48c5-9345-fc73c48a80aa'
