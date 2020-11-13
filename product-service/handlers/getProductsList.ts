@@ -1,16 +1,15 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import * as invoke from '../sql/db_client.helper';
-const headers = {
-    // "Access-Control-Allow-Origin": "https://d3kaeffpjwwpyk.cloudfront.net"
-    "Access-Control-Allow-Origin": "*"
-    // 'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
-}
+import { headers } from '../enums/constants';
 
+console.log(headers);
 export const getProductsList: APIGatewayProxyHandler = async (event, _context) => {
     let products;
     try {
         products = await invoke.invoke('select p.id, p.description, p.price, p.title, s.count from products p left join stocks s on p.id = s.product_id');
+        console.log(headers);
+
         return {
             headers,
             statusCode: 200,

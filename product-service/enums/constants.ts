@@ -1,6 +1,8 @@
-export default {
+module.exports = {
     headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true
+        // "Access-Control-Allow-Origin": "https://d3kaeffpjwwpyk.cloudfront.net"
+        // 'Access-Control-Allow-Credentials': true, 
     }
+
 }

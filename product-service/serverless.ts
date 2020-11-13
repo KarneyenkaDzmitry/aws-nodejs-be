@@ -74,6 +74,19 @@ const serverlessConfiguration: Serverless = {
         }
       ]
     },
+    deleteProductsById: {
+      handler: 'handler.deleteProductsById',
+
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: '/products/{productId}',
+            cors: true
+          }
+        }
+      ]
+    }
   }
 }
 
