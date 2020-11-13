@@ -5,9 +5,10 @@ import { getPattern } from '../enums/patterns.enum';
 import { headers } from '../enums/constants';
 
 
-export const getProductsById: APIGatewayProxyHandler = async (event, _context) => {
+export const deleteProductsById: APIGatewayProxyHandler = async (event, _context) => {
     let product;
     let response = {};
+    console.log(headers);
     try {
         const req_id = event.pathParameters.productId;
         if (!getPattern("UUID_V4").test(req_id)) throw new Error("ProductId should match to the UUID pattern.")
