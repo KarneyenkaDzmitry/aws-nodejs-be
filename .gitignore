@@ -3,3 +3,4 @@ product-service/env.json
 product-service/sql/DDL.sql
 product-service/sql/DML.sql
 product-service/sql/initial.sql
+node_modules/
