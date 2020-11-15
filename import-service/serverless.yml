@@ -15,7 +15,11 @@ service: aws-nodejs-import-service
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
-
+# custom:
+#   webpack:
+#     includeModules:
+#       forceExclude:
+#         - aws-sdk
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 frameworkVersion: '2'

@@ -25,18 +25,12 @@ module.exports.importProductsFile = async event => {
   } catch (error) {
     console.log(error);
     return {
-      statusCode: 404,
+      statusCode: 406,
       headers: {
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        Accept: 'text/csv'
       },
-      body: JSON.stringify(
-        {
-          message: error,
-          input: event,
-        },
-        null,
-        2
-      ),
+      body: JSON.stringify(error, null, 2),
     };
   }
 };
