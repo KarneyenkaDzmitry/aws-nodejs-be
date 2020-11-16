@@ -4,3 +4,5 @@ product-service/sql/DDL.sql
 product-service/sql/DML.sql
 product-service/sql/initial.sql
 node_modules/
+/**/.vscode/
+import-service-v1/

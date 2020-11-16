@@ -1,0 +1,6 @@
+{
+    "BUCKET": "aws-nodejs-import-service",
+    "REGION": "eu-west-1",
+    "PREFIX": "uploaded",
+    "RSD_PREFIX": "parsed"
+}
