@@ -16,6 +16,7 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
+    "aws-sdk": "^2.792.0",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
