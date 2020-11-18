@@ -1,10 +1,10 @@
 import { S3Event, S3Handler, Context } from 'aws-lambda';
 import * as AWS from 'aws-sdk';
 import * as csv from 'csv-parser';
-const { PREFIX, REGION, BUCKET, RSD_PREFIX } = require('../constants.json');
+const { IMPORT_SERVICE_PREFIX_SOURCE, IMPORT_SERVICE_REGION, IMPORT_SERVICE_BUCKET_NAME, IMPORT_SERVICE_PREFIX_DESTINATION } = process.env;
 
-export const importFileParser: S3Handler = async (event: S3Event, _context: Context) => {
-    const s3 = new AWS.S3({ region: REGION });
+export const importFileParser: S3Handler = async (event: S3Event, _context: Context): Promise<void> => {
+    const s3 = new AWS.S3({ region: IMPORT_SERVICE_REGION });
 
     try {
 
@@ -12,12 +12,12 @@ export const importFileParser: S3Handler = async (event: S3Event, _context: Cont
 
             const { s3: { object: { key } } } = record;
             const params = {
-                Bucket: BUCKET,
+                Bucket: IMPORT_SERVICE_BUCKET_NAME,
                 Key: key
             };
             const s3stream = s3.getObject(params).createReadStream();
 
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 s3stream
                     .pipe(csv())
                     .on('data', (data) => {
@@ -31,9 +31,9 @@ export const importFileParser: S3Handler = async (event: S3Event, _context: Cont
 
                         await s3
                             .copyObject({
-                                Bucket: BUCKET,
-                                CopySource: `${BUCKET}/${key}`,
-                                Key: key.replace(PREFIX, RSD_PREFIX),
+                                Bucket: IMPORT_SERVICE_BUCKET_NAME,
+                                CopySource: `${IMPORT_SERVICE_BUCKET_NAME}/${key}`,
+                                Key: key.replace(IMPORT_SERVICE_PREFIX_SOURCE, IMPORT_SERVICE_PREFIX_DESTINATION),
                             })
                             .promise();
 

@@ -6,3 +6,5 @@ product-service/sql/initial.sql
 node_modules/
 /**/.vscode/
 import-service-v1/
+import-service/usage of env.example.yml
+import-service/.env.local

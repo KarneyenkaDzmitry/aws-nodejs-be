@@ -15,7 +15,7 @@ const serverlessConfiguration: Serverless = {
     }
   },
   // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -26,7 +26,7 @@ const serverlessConfiguration: Serverless = {
       minimumCompressionSize: 1024,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
     },
     iamRoleStatements: [
       {
@@ -49,7 +49,10 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: 'get',
             path: 'import',
-            cors: true,
+            cors: {
+              origins: ["*"],
+              headers: ["*"]
+            },
             request: {
               parameters: {
                 querystrings: {
