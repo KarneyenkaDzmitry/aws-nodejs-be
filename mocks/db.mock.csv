@@ -1,2 +1,7 @@
-﻿id,title,description,price,count
-7567ec4b-b10c-48c5-9345-fc73c48a80b5,ProductNameFromCSV,Short description for the product from CSV,555,5
+﻿id,title,image_ref,description,price,count
+,ProductNameFromCSV-1,1,Short description for the product from CSV-1,111,1
+,ProductNameFromCSV-2,2,Short description for the product from CSV-2,222,2
+,ProductNameFromCSV-3,3,Short description for the product from CSV-3,333,3
+,ProductNameFromCSV-4,4,Short description for the product from CSV-4,444,4
+,ProductNameFromCSV-5,5,Short description for the product from CSV-5,555,5
+,ProductNameFromCSV-6,6,Short description for the product from CSV-6,666,6
