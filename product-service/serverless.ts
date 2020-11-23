@@ -19,7 +19,12 @@ const serverlessConfiguration: Serverless = {
     sns: {
       topic_name: "createProductTopic",
       arn: "${cf:aws-nodejs-be-${self:provider.stage}.TopicARN}"
-    }
+      // arn: {
+      //   "Ref": "SNSTopic"
+      // }
+    },
+    NOTIFY_SUCCEED_EMAIL: '${file(./env.json):NOTIFY_SUCCEED_EMAIL}',
+    NOTIFY_FAILED_EMAIL: '${file(./env.json):NOTIFY_FAILED_EMAIL}',
   },
   // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
@@ -39,6 +44,8 @@ const serverlessConfiguration: Serverless = {
       DB_PSSW: '${file(./env.json):DB_PSSW}',
       DB_ENDPOINT: '${file(./env.json):DB_ENDPOINT}',
       DB_PORT: '${file(./env.json):DB_PORT}',
+      NOTIFY_SUCCEED_EMAIL: '${file(./env.json):NOTIFY_SUCCEED_EMAIL}',
+      NOTIFY_FAILED_EMAIL: '${file(./env.json):NOTIFY_FAILED_EMAIL}',
       PRODUCT_SERVICE_REGION: '${self:provider.region}',
       TOPIC_ARN: "${self:custom.sns.arn}"
     },
@@ -131,14 +138,25 @@ const serverlessConfiguration: Serverless = {
   },
   resources: {
     Resources: {
-      SNSSubscriptions: {
+      SNSSubscriptionSucceed: {
         Type: "AWS::SNS::Subscription",
         Properties: {
-          Endpoint: "dkonevodov@gmail.com",
+          Endpoint: "${self:custom.NOTIFY_SUCCEED_EMAIL}",
           Protocol: "email",
           TopicArn: { "Ref": "SNSTopic" },
           FilterPolicy: {
-
+            status: ["succeed"]
+          }
+        }
+      },
+      SNSSubscriptionFailed: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "${self:custom.NOTIFY_FAILED_EMAIL}",
+          Protocol: "email",
+          TopicArn: { "Ref": "SNSTopic" },
+          FilterPolicy: {
+            status: ["failed"]
           }
         }
       },

@@ -45,7 +45,7 @@ export const importFileParser: S3Handler = async (event: S3Event, _context: Cont
                             QueueUrl: SQS_QUEUE_URL
                         };
 
-                        console.log(`SQS:\n[%o]`,);
+                        console.log(`SQS:\n[%o]`, parameters);
                         result.push(sqs.sendMessage(parameters).promise());
                     })
                     .on('error', (err) => {
