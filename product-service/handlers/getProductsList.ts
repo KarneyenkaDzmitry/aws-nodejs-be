@@ -16,6 +16,8 @@ export const getProductsList: APIGatewayProxyHandler = async (event, _context) =
             body: JSON.stringify(products.rows, null, 2)
         };
     } catch (error) {
+        console.error("[%o]", error)
+        // console.error(error.message)
         return {
             headers,
             statusCode: 500,
