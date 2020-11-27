@@ -15,28 +15,48 @@ const serverlessConfiguration: Serverless = {
     }
   },
   // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
+    stage: 'dev',
+    region: 'eu-west-1',
+    profile: 'dkonevodov',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-    },
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+    }
   },
   functions: {
-    hello: {
-      handler: 'handler.hello',
+    basicAuthorizer: {
+      handler: 'handler.basicAuthorizer',
       events: [
         {
           http: {
+            path: 'token',
             method: 'get',
-            path: 'hello',
+            cors: true
           }
         }
       ]
+    },
+  },
+  resources: {
+    Resources: {
+
+    },
+    Outputs: {
+      AuthorizationARN: {
+        Description: "Authorization ARN of the token authorization",
+        Value: {
+          "Fn::GetAtt": ["BasicAuthorizerLambdaFunction", "Arn"]
+        },
+        Export: {
+          Name: 'AuthorizationARN'
+        }
+      }
     }
   }
 }

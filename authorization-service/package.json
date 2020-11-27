@@ -8,6 +8,7 @@
     "new:project:create": "serverless create --template aws-nodejs-typescript --path ../authorization-service --name aws-nodejs-authorization-service"
   },
   "dependencies": {
+    "serverless-dotenv-plugin": "^3.1.0",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {

@@ -13,6 +13,10 @@ const serverlessConfiguration: Serverless = {
       webpackConfig: './webpack.config.js',
       includeModules: true
     },
+    services: {
+      product: "aws-nodejs-be",
+      authorization: "aws-nodejs-authorization-service"
+    },
     s3: {
       region: 'eu-west-1',
       bucket: 'aws-nodejs-import-service',
@@ -22,10 +26,17 @@ const serverlessConfiguration: Serverless = {
     sqs: {
       arn: "${cf:aws-nodejs-be-${self:provider.stage}.QueueARN}",
       url: "${cf:aws-nodejs-be-${self:provider.stage}.QueueURL}"
+    },
+    auth: {
+      name: 'basicAuthorizer',
+      arn: {
+        "Fn::ImportValue": "AuthorizationARN"
+      }
+      // 'arn:aws:lambda:AWS::LOCATION:AWS::Acc:function:${self:custom.services.authorization}-${self:provider.stage}-${self:custom.services.auth.name}'
     }
   },
   // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -62,6 +73,7 @@ const serverlessConfiguration: Serverless = {
     ]
   },
   functions: {
+
     importProductsFile: {
       handler: 'handler.importProductsFile',
       events: [
@@ -79,6 +91,14 @@ const serverlessConfiguration: Serverless = {
                   name: true
                 }
               }
+            },
+            authorizer: {
+              name: "${self:custom.auth.name}",
+              arn: "${self:custom.auth.arn}",
+              resultTtlInSeconds: 300,
+              identitySource: 'method.request.header.Authorization',
+              identityValidationExpression: "^Basic [\\w\\d+=\\/]*$",
+              type: 'token'
             }
           }
         }
@@ -100,6 +120,36 @@ const serverlessConfiguration: Serverless = {
           }
         }
       ]
+    }
+  },
+  resources: {
+    Resources: {
+      GatewayResponseDefault4XX: {
+        Type: "AWS::ApiGateway::GatewayResponse",
+        Properties: {
+          ResponseParameters: {
+            "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+            "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,<your-custom-header-goes-here>'"
+          },
+          ResponseType: "DEFAULT_4XX",
+          RestApiId: {
+            "Ref": "ApiGatewayRestApi"
+          }
+        }
+      },
+      GatewayResponseDefault5XX: {
+        Type: "AWS::ApiGateway::GatewayResponse",
+        Properties: {
+          ResponseParameters: {
+            "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+            "gatewayresponse.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,<your-custom-header-goes-here>'"
+          },
+          ResponseType: "DEFAULT_5XX",
+          RestApiId: {
+            "Ref": "ApiGatewayRestApi"
+          }
+        }
+      }
     }
   }
 }
