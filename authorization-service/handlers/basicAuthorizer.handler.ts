@@ -1,8 +1,7 @@
 import { APIGatewayTokenAuthorizerHandler, APIGatewayTokenAuthorizerEvent, Context, APIGatewayAuthorizerResult } from 'aws-lambda';
 import { generatePolicy } from './authorization.helper';
 
-export const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event: APIGatewayTokenAuthorizerEvent, _context: Context): Promise<APIGatewayAuthorizerResult> => {
-    // console.log('CONTEXT: [%o]', _context)
+export const basicAuthorizer: APIGatewayTokenAuthorizerHandler = (event: APIGatewayTokenAuthorizerEvent, _context: Context): Promise<APIGatewayAuthorizerResult> => {
     console.log('EVENT: [%o]', event)
 
     return new Promise((resolve, reject) => {
