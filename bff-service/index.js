@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const axios = require('axios');
 const mcache = require('memory-cache');
-const { PROXY_PORT = 8089, PROXY_HOST = 'localhost' } = process.env;
+const { PROXY_PORT = 80, PROXY_HOST = 'localhost' } = process.env;
 const cacheConfig = {
         methods: /(GET|OPTIONS)/i,
         path: /products$/i,
@@ -75,4 +75,5 @@ app.get('/info', (req, res, next) => {
 console.log(PROXY_HOST)
 console.log(PROXY_PORT)
 console.log(env)
-app.listen(PROXY_PORT, PROXY_HOST);
+// app.listen(PROXY_PORT, PROXY_HOST);
+app.listen();
