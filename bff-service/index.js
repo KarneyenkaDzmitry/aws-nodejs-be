@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const axios = require('axios');
 const mcache = require('memory-cache');
-const { PROXY_PORT = 80, PROXY_HOST = 'localhost' } = process.env;
+const { PORT = 8080} = process.env;
 const cacheConfig = {
         methods: /(GET|OPTIONS)/i,
         path: /products$/i,
@@ -47,6 +47,9 @@ const validator = (req, res, next) => {
 const app = express();
 
 app.use(morgan('dev'));
+app.get('/info', (req, res, next) => {
+    res.send('This is a PROXY, baby.')
+});
 app.use(validator);
 app.use(cache(120));
 
@@ -60,20 +63,12 @@ Object.entries(env.parsed).forEach(([key, value]) => {
             [`^/${key.toLowerCase()}`]: '',
         },
         onProxyRes: async (proxyRes, req, res) => {
-            console.log('PROXY_RES: [%o]', 'proxyRes');
+            // console.log('PROXY_RES: [%o]', 'proxyRes');
         },
         onProxyReq: (proxyReq, req, res) => {
-            console.log('PROXY_REQ: [%o]', 'proxyReq');
+            // console.log('PROXY_REQ: [%o]', 'proxyReq');
         }
     }));
 })
 
-app.get('/info', (req, res, next) => {
-    res.send('This is a PROXY, baby.')
-});
-
-console.log(PROXY_HOST)
-console.log(PROXY_PORT)
-console.log(env)
-// app.listen(PROXY_PORT, PROXY_HOST);
-app.listen(PROXY_PORT);
+app.listen(PORT);
